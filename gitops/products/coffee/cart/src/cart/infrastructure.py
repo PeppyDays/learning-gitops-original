@@ -5,8 +5,14 @@ class FakeCartRepository(CartRepository):
     _credential: dict[str, str]
     _items: dict[int, Cart]
 
-    def __init__(self, username: str, password: str, items: list[dict[str:int]] = None):
+    def __init__(
+        self, username: str, password: str, items: list[dict[str, int]] = None
+    ):
         self._credential = {"username": username, "password": password}
+
+        if self._credential["username"] not in ["administrator", "cart"]:
+            raise ValueError(f"Invalid username from credential {self._credential}.")
+
         self._items = {}
 
         if items:
