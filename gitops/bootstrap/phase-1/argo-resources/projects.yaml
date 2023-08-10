@@ -6,13 +6,13 @@ metadata:
 spec:
   description: Platform engineering team's project that supports all other projects
   sourceRepos:
-    - '*'
+  - '*'
   destinations:
-    - namespace: '*'
-      server: '*'
+  - namespace: '*'
+    server: '*'
   clusterResourceWhitelist:
-    - group: '*'
-      kind: '*'
+  - group: '*'
+    kind: '*'
   namespaceResourceWhitelist:
-    - group: '*'
-      kind: '*'
+  - group: '*'
+    kind: '*'
