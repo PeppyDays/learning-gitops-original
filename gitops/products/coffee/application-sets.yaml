@@ -12,11 +12,7 @@ spec:
       directories:
       - path: gitops/applications/coffee/*
       requeueAfterSeconds: 20
-  syncPolicy:
-    automated:
-      allowEmpty: true
-      prune: true
-      selfHeal: true
+  syncPolicy: {}
   template:
     metadata:
       name: '{{ .path.basenameNormalized }}'
