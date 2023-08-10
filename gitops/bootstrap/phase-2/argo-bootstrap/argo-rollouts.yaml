@@ -7,7 +7,7 @@ spec:
   project: platform
   source:
     repoURL: https://github.com/PeppyDays/learning-gitops.git
-    path: gitops/bootstrap/phase-1/argo-rollouts
+    path: gitops/applications/platform/argo-rollouts
     targetRevision: main
   destination:
     server: https://kubernetes.default.svc
