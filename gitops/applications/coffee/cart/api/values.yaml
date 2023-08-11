@@ -5,7 +5,7 @@ service:
     exposed: true
 
 image:
-  repository: coffee
+  repository: ghcr.io/peppydays/coffee/cart
   tag: latest
   pullPolicy: IfNotPresent
 
