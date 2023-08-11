@@ -51,4 +51,5 @@ ingress:
     - path: /
 
 secret:
-  db: []
+  db:
+  - cart-db
