@@ -30,6 +30,10 @@ deployment:
       maxUnavailable: 0
   # kind: Rollout
   # strategy:
+  #   type: RollingUpdate
+  #   rollingUpdate:
+  #     maxSurge: 1
+  #     maxUnavailable: 0
   #   canary:
   #     maxSurge: 1
   #     maxUnavailable: 0
