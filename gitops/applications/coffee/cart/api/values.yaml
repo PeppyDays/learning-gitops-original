@@ -50,6 +50,6 @@ ingress:
     paths:
     - path: /
 
-secret:
+secrets:
   db:
   - cart-db
