@@ -3,7 +3,7 @@ on:
     types:
     - closed
     paths:
-    - .github/workflows/coffee-cart-ci.yaml
+    - .github/workflows/coffee-cart-cd.yaml
     - products/coffee/cart/**
   workflow_dispatch:
 
@@ -38,6 +38,8 @@ jobs:
       with:
         sparse-checkout: |
           ${{ env.APPLICATION_PATH }}
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v2
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
     - name: Log in to GitHub Container Registry
@@ -50,6 +52,7 @@ jobs:
       uses: docker/build-push-action@v4
       with:
         context: ${{ env.APPLICATION_PATH }}
+        platforms: linux/amd64,linux/arm64
         file: ${{ env.APPLICATION_PATH }}/Dockerfile
         push: true
         tags: |
