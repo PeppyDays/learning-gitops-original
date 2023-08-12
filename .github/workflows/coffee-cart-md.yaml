@@ -13,7 +13,7 @@ env:
   SERVICE_NAME: cart
   SERVICE_PATH: products/coffee/cart
   GITOPS_APPLICATION_PATH: gitops/applications/coffee/cart/api
-  IMAGE_REPOSITORY: ghcr.io/${{ github.repository_owner }}/coffee/cart
+  IMAGE_REPOSITORY: ghcr.io/${{ github.repository_owner }}/coffee/cart/api
 
 jobs:
   build-and-push:
