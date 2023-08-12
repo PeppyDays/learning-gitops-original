@@ -77,7 +77,7 @@ jobs:
     - name: Set Variables
       id: set-vars
       run: |
-        echo "IMAGE_TAG=feature-`echo ${GITHUB_SHA::7}`" >> $GITHUB_ENV
+        echo "IMAGE_TAG=rc-`echo ${GITHUB_SHA::7}`" >> $GITHUB_ENV
     - name: Checkout GitOps Code
       uses: actions/checkout@v3
       with:
