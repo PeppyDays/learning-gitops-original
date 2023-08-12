@@ -10,8 +10,8 @@ image:
   pullPolicy: IfNotPresent
 
 env:
-- name: TZ
-  value: UTC
+  - name: TZ
+    value: UTC
 
 resources:
   app:
@@ -36,20 +36,20 @@ autoscaling:
 livenessProbe:
   enabled: true
   path: /
-  initialDelaySeconds: 20
+  initialDelaySeconds: 5
 
 readinessProbe:
   enabled: true
   path: /
-  initialDelaySeconds: 20
+  initialDelaySeconds: 5
 
 ingress:
   enabled: true
   hosts:
-  - host: order.example.com
-    paths:
-    - path: /
+    - host: order.example.com
+      paths:
+        - path: /
 
 secrets:
   db:
-  - order-db
+    - order-db

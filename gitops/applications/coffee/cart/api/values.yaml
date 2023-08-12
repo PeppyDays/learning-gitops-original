@@ -32,11 +32,11 @@ autoscaling:
 livenessProbe:
   enabled: true
   path: /
-  initialDelaySeconds: 20
+  initialDelaySeconds: 5
 readinessProbe:
   enabled: true
   path: /
-  initialDelaySeconds: 20
+  initialDelaySeconds: 5
 ingress:
   enabled: true
   hosts:
