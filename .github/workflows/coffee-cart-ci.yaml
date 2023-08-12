@@ -3,11 +3,6 @@ on:
     paths:
     - .github/workflows/coffee-cart-ci.yaml
     - products/coffee/cart/**
-  workflow_dispatch:
-    inputs:
-      concurrency_group:
-        required: true
-        default: 'coffee-cart-manual-ci'
 
 name: Coffee Cart CI
 run-name: Coffee Cart CI by @${{ github.actor }}
@@ -17,8 +12,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  APPLICATION_SERVICE_PATH: products/coffee/cart
-  GITOPS_SERVICE_PATH: gitops/application/coffee/cart
+  APPLICATION_PATH: products/coffee/cart
 
 jobs:
   test:
@@ -29,7 +23,7 @@ jobs:
       uses: actions/checkout@v3
       with:
         sparse-checkout: |
-          products/coffee/cart
+          ${{ env.APPLICATION_PATH }}
     - name: Install poetry
       run: pipx install poetry
     - name: Set up Python Environment
@@ -39,13 +33,13 @@ jobs:
         cache: 'poetry'
     - name: Install Dependencies
       run: |
-        pushd ${{ env.APPLICATION_SERVICE_PATH }}
+        pushd ${{ env.APPLICATION_PATH }}
         poetry env use 3.11
         poetry install --with test --without dev
         poetry install --only-root
     - name: Run tests
       run: |
-        pushd ${{ env.APPLICATION_SERVICE_PATH }}
+        pushd ${{ env.APPLICATION_PATH }}
         make test
   build:
     name: Build
@@ -55,8 +49,8 @@ jobs:
       uses: actions/checkout@v3
       with:
         sparse-checkout: |
-          products/coffee/cart
+          ${{ env.APPLICATION_PATH }}
     - name: Build
       run: |
-        pushd ${{ env.APPLICATION_SERVICE_PATH }}
+        pushd ${{ env.APPLICATION_PATH }}
         docker build . -t cart:latest
