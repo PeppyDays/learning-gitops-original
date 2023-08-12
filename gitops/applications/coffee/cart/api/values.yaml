@@ -5,7 +5,7 @@ service:
     exposed: true
 image:
   repository: ghcr.io/peppydays/coffee/cart
-  tag: latest
+  tag: rc-21256c
   pullPolicy: IfNotPresent
 env:
   - name: TZ
