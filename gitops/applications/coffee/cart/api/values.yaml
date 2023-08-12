@@ -29,8 +29,8 @@ deployment:
       maxUnavailable: 0
 
 autoscaling:
-  minReplicas: 1
-  maxReplicas: 1
+  minReplicas: 2
+  maxReplicas: 4
 
 livenessProbe:
   enabled: true
