@@ -4,7 +4,7 @@ service:
     port: 8080
     exposed: true
 image:
-  repository: ghcr.io/peppydays/coffee/cart
+  repository: ghcr.io/peppydays/coffee/cart/api
   tag: rc-6dd6f1e
   pullPolicy: IfNotPresent
 env:
