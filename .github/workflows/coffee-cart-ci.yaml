@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  APPLICATION_PATH: products/coffee/cart
+  APPLICATION_PATH: products/coffee/cart/api
 
 jobs:
   test:

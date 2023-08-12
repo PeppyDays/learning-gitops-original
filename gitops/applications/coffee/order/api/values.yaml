@@ -5,13 +5,13 @@ service:
     exposed: true
 
 image:
-  repository: ghcr.io/peppydays/coffee/order
+  repository: ghcr.io/peppydays/coffee/order/api
   tag: latest
   pullPolicy: IfNotPresent
 
 env:
-  - name: TZ
-    value: UTC
+- name: TZ
+  value: UTC
 
 resources:
   app:
@@ -46,10 +46,10 @@ readinessProbe:
 ingress:
   enabled: true
   hosts:
-    - host: order.example.com
-      paths:
-        - path: /
+  - host: order.example.com
+    paths:
+    - path: /
 
 secrets:
   db:
-    - order-db
+  - order-db
