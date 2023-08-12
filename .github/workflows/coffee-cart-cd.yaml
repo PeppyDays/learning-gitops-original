@@ -51,8 +51,8 @@ jobs:
         tags: |
           ${{ steps.set-vars.outputs.IMAGE_REPOSITORY }}:rc-${{ github.sha }}
           ${{ steps.set-vars.outputs.IMAGE_REPOSITORY }}:latest
-        cache-from: type=registry,ref=${{ steps.set-vars.outputs.IMAGE_REPOSITORY }}}:cache
-        cache-to: type=registry,ref=${{ steps.set-vars.outputs.IMAGE_REPOSITORY }}}:cache,mode=max
+        cache-from: type=registry,ref=${{ steps.set-vars.outputs.IMAGE_REPOSITORY }}:cache
+        cache-to: type=registry,ref=${{ steps.set-vars.outputs.IMAGE_REPOSITORY }}:cache,mode=max
     - name: Tag Image
       run: |
         git tag ${{ env.APPLICATION_NAME }}/rc-${{ github.sha }}
