@@ -14,12 +14,3 @@ items:
 - cart_id: 3
   user_id: 3
   price: 3
-- cart_id: 4
-  user_id: 4
-  price: 4
-- cart_id: 5
-  user_id: 5
-  price: 5
-- cart_id: 6
-  user_id: 6
-  price: 6
