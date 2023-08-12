@@ -24,6 +24,10 @@ jobs:
     name: Build and Push
     runs-on: ubuntu-latest
     steps:
+    - name: Set Variables
+      id: set-vars
+      run: |
+        echo "IMAGE_REPOSITORY=${{ env.IMAGE_REPOSITORY }} | tr '[:upper:]' '[:lower:]'" >> $GITHUB_ENV
     - name: Checkout Application Code
       uses: actions/checkout@v3
       with:
@@ -44,10 +48,10 @@ jobs:
         file: ${{ env.APPLICATION_PATH }}/Dockerfile
         push: true
         tags: |
-          ${{ env.IMAGE_REPOSITORY }}:latest
-          ${{ env.IMAGE_REPOSITORY }}:rc-${{ github.sha }}
-        cache-from: type=registry,ref=${{ env.IMAGE_REPOSITORY }}:cache
-        cache-to: type=registry,ref=${{ env.IMAGE_REPOSITORY }}:cache,mode=max
+          ${{ steps.set-vars.outputs.IMAGE_REPOSITORY }}:rc-${{ github.sha }}
+          ${{ steps.set-vars.outputs.IMAGE_REPOSITORY }}:latest
+        cache-from: type=registry,ref=${{ steps.set-vars.outputs.IMAGE_REPOSITORY }}}:cache
+        cache-to: type=registry,ref=${{ steps.set-vars.outputs.IMAGE_REPOSITORY }}}:cache,mode=max
     - name: Tag Image
       run: |
         git tag ${{ env.APPLICATION_NAME }}/rc-${{ github.sha }}
