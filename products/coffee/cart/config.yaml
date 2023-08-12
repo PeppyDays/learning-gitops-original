@@ -17,3 +17,6 @@ items:
 - cart_id: 4
   user_id: 4
   price: 4
+- cart_id: 5
+  user_id: 5
+  price: 5
