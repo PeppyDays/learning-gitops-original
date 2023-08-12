@@ -3,8 +3,9 @@ on:
     types:
     - closed
     paths:
-      - .github/workflows/coffee-cart-ci.yaml
-      - products/coffee/cart/**
+    - .github/workflows/coffee-cart-ci.yaml
+    - products/coffee/cart/**
+  workflow_dispatch:
 
 name: Coffee Cart CD
 run-name: Coffee Cart CD by @${{ github.actor }}
@@ -27,7 +28,7 @@ jobs:
     - name: Set Variables
       id: set-vars
       run: |
-        echo "IMAGE_REPOSITORY=${{ env.IMAGE_REPOSITORY }} | tr '[:upper:]' '[:lower:]'" >> $GITHUB_ENV
+        echo "IMAGE_REPOSITORY=${{ env.IMAGE_REPOSITORY }} | tr '[:upper:]' '[:lower:]'" >> $GITHUB_OUTPUT
     - name: Checkout Application Code
       uses: actions/checkout@v3
       with:
