@@ -85,6 +85,7 @@ jobs:
     - name: Checkout GitOps Code
       uses: actions/checkout@v3
       with:
+        ref: main
         sparse-checkout: |
           ${{ env.GITOPS_APPLICATION_PATH }}
     - name: Update Image Tag and Commit
