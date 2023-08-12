@@ -24,11 +24,15 @@ jobs:
   build-and-push:
     name: Build and Push
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
     steps:
     - name: Set Variables
       id: set-vars
       run: |
-        echo "IMAGE_REPOSITORY=`echo ${{ env.IMAGE_REPOSITORY }} | tr '[:upper:]' '[:lower:]'`" >> $GITHUB_OUTPUT
+        echo "IMAGE_REPOSITORY=`echo ${{ env.IMAGE_REPOSITORY }} | tr '[:upper:]' '[:lower:]'`" >> $GITHUB_ENV
+        echo "GITHUB_SHORT_SHA=$(echo $GITHUB_SHA | cut -c 1-6)" >> $GITHUB_ENV
     - name: Checkout Application Code
       uses: actions/checkout@v3
       with:
@@ -49,20 +53,27 @@ jobs:
         file: ${{ env.APPLICATION_PATH }}/Dockerfile
         push: true
         tags: |
-          ${{ steps.set-vars.outputs.IMAGE_REPOSITORY }}:rc-${{ github.sha }}
-          ${{ steps.set-vars.outputs.IMAGE_REPOSITORY }}:latest
-        cache-from: type=registry,ref=${{ steps.set-vars.outputs.IMAGE_REPOSITORY }}:cache
-        cache-to: type=registry,ref=${{ steps.set-vars.outputs.IMAGE_REPOSITORY }}:cache,mode=max
+          ${{ env.IMAGE_REPOSITORY }}:rc-${{ env.GITHUB_SHORT_SHA }}
+          ${{ env.IMAGE_REPOSITORY }}:latest
+        cache-from: type=registry,ref=${{ env.IMAGE_REPOSITORY }}:cache
+        cache-to: type=registry,ref=${{ env.IMAGE_REPOSITORY }}:cache,mode=max
     - name: Tag Image
       run: |
-        git tag ${{ env.APPLICATION_NAME }}/rc-${{ github.sha }}
+        git tag ${{ env.APPLICATION_NAME }}/rc-${{ env.GITHUB_SHORT_SHA }}
         git tag -f ${{ env.APPLICATION_NAME }}/latest
         git push origin --tags -f
   deploy:
     name: Deploy
     needs: build-and-push
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     steps:
+    - name: Set Variables
+      id: set-vars
+      run: |
+        echo "GITHUB_SHORT_SHA=$(echo $GITHUB_SHA | cut -c 1-6)" >> $GITHUB_ENV
     - name: Checkout GitOps Code
       uses: actions/checkout@v3
       with:
@@ -71,11 +82,11 @@ jobs:
     - name: Update Image Tag and Commit
       run: |
         pushd ${{ env.GITOPS_PATH }}
-        yq -P -i '.image.tag = "rc-${{ github.sha }}"' values.yaml
+        yq -P -i '.image.tag = "rc-${{ env.GITHUB_SHORT_SHA }}"' values.yaml
         git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
         git config --global user.name "$GITHUB_ACTOR"
         git add .
-        git commit -m "Update image :: ${{ env.APPLICATION_NAME }} :: rc-${{ github.sha }}"
+        git commit -m "Update image :: ${{ env.APPLICATION_NAME }} :: rc-${{ env.GITHUB_SHORT_SHA }}"
     - name: Push Commited Files
       uses: nick-fields/retry@v2
       with:
