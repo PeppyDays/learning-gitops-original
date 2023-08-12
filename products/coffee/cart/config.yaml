@@ -20,3 +20,6 @@ items:
 - cart_id: 5
   user_id: 5
   price: 5
+- cart_id: 6
+  user_id: 6
+  price: 6
