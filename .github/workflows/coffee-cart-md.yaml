@@ -16,7 +16,7 @@ env:
   IMAGE_REPOSITORY: ghcr.io/${{ github.repository_owner }}/coffee/cart/api
 
 jobs:
-  build-and-push:
+  build-and-push-in-branch:
     name: Build and Push
     runs-on: ubuntu-latest
     if: ${{ github.ref_type == 'branch' }}
@@ -55,29 +55,44 @@ jobs:
           ${{ env.IMAGE_REPOSITORY }}:${{ env.IMAGE_TAG }}
         cache-from: type=registry,ref=${{ env.IMAGE_REPOSITORY }}:cache
         cache-to: type=registry,ref=${{ env.IMAGE_REPOSITORY }}:cache,mode=max
+  get-actual-tag-from-latest-tag:
+    name: Get Actual Tag from Latest Tag
+    runs-on: ubuntu-latest
+    if: ${{ github.ref_type == 'tag' && contains(github.ref_name, 'latest') }}
+    permissions:
+      id-token: write
+      contents: read
+    outputs:
+      latest_tag: ${{ steps.get-image-tag.IMAGE_TAG }}
+    steps:
+    - name: Checkout Application Code
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ github.ref_name }}
+        sparse-checkout: |
+          ${{ env.APPLICATION_PATH }}
+    - name: Get Image Tag
+      id: get-image-tag
+      run: |
+        echo "IMAGE_TAG=rc-`echo ${GITHUB_SHA::7}`" >> $GITHUB_OUTPUT
   deploy:
     name: Deploy
-    needs: build-and-push
+    needs: 
+    - build-and-push-in-branch
+    - get-actual-tag-from-latest-tag
     if: always() && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled')
     runs-on: ubuntu-latest
     permissions:
       id-token: write
       contents: write
     steps:
-    - name: Checkout Application Code to Get Actual Git Tag from Latest
-      if: ${{ github.ref_type == 'tag' && contains(github.ref_name, 'latest') }}
-      uses: actions/checkout@v3
-      with:
-        ref: ${{ github.ref_name }}
-        sparse-checkout: |
-          ${{ env.APPLICATION_PATH }}
     - name: Set Variables
       id: set-vars
       run: |
         if [[ ${{ github.ref_type }} == 'branch' ]]; then
           export IMAGE_TAG=feature-`echo ${GITHUB_SHA::7}`
         elif [[ ${{ github.ref_type }} == 'tag' && ${{ github.ref_name }} =~ .*latest ]]; then
-          export IMAGE_TAG=rc-`echo ${GITHUB_SHA::7}`
+          export IMAGE_TAG=${{ needs.get-actual-tag-from-latest-tag.outputs.latest_tag }}
         else
           export IMAGE_TAG=`echo ${{ github.ref_name }} | cut -d '/' -f4`
         fi
