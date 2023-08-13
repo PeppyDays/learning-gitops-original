@@ -5,11 +5,11 @@ service:
     exposed: true
 image:
   repository: ghcr.io/peppydays/coffee/cart/api
-  tag: rc-72a1075
+  tag: rc-6ffbe33
   pullPolicy: IfNotPresent
 env:
-- name: TZ
-  value: UTC
+  - name: TZ
+    value: UTC
 resources:
   app:
     limits:
@@ -24,8 +24,8 @@ deployment:
       maxSurge: 1
       maxUnavailable: 0
       steps:
-      - setWeight: 20
-      - pause: {}
+        - setWeight: 20
+        - pause: {}
 autoscaling:
   minReplicas: 2
   maxReplicas: 4
@@ -40,9 +40,9 @@ readinessProbe:
 ingress:
   enabled: true
   hosts:
-  - host: cart.example.com
-    paths:
-    - path: /
+    - host: cart.example.com
+      paths:
+        - path: /
 secrets:
   db:
-  - cart-db
+    - cart-db
