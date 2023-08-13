@@ -63,7 +63,7 @@ jobs:
       id-token: write
       contents: read
     outputs:
-      latest_tag: ${{ steps.get-image-tag.IMAGE_TAG }}
+      latest_tag: ${{ steps.get-image-tag.outputs.IMAGE_TAG }}
     steps:
     - name: Checkout Application Code
       uses: actions/checkout@v3
