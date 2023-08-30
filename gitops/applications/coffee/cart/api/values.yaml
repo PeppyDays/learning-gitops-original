@@ -26,7 +26,8 @@ deployment:
       steps:
         - setCanaryScale:
             weight: 1
-        - setWeight: 100
+        - setCanaryScale:
+            matchTrafficWeight: true
       # - pause: {}
 autoscaling:
   minReplicas: 1
