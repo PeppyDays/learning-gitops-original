@@ -21,10 +21,10 @@ deployment:
   kind: Rollout
   strategy:
     canary:
-      maxSurge: 1
+      maxSurge: 2
       maxUnavailable: 0
       steps:
-        - setWeight: 50
+        - setWeight: 100
         # - pause: {}
 autoscaling:
   minReplicas: 1
