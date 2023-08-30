@@ -22,8 +22,10 @@ deployment:
   strategy:
     canary:
       maxSurge: 1
-      maxUnavailable: 1
+      maxUnavailable: 0
       steps:
+        - setCanaryScale:
+            weight: 1
         - setWeight: 100
       # - pause: {}
 autoscaling:
