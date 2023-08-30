@@ -27,8 +27,8 @@ deployment:
         - setWeight: 100
         # - pause: {}
 autoscaling:
-  minReplicas: 2
-  maxReplicas: 4
+  minReplicas: 1
+  maxReplicas: 1
 livenessProbe:
   enabled: true
   path: /
