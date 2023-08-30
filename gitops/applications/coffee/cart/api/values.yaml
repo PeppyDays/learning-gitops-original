@@ -25,8 +25,6 @@ deployment:
       maxUnavailable: 0
       steps:
         - setWeight: 100
-        - pause:
-            duration: 10
 autoscaling:
   minReplicas: 1
   maxReplicas: 1
