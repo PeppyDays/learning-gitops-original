@@ -24,7 +24,7 @@ deployment:
       maxSurge: 2
       maxUnavailable: 0
       steps:
-        - setWeight: 100
+        - setWeight: 50
         # - pause: {}
 autoscaling:
   minReplicas: 1
